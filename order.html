@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Hosting | ARORA.HOST</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body{font-family:Arial,sans-serif;margin:0;background:#f4f7fc;color:#17233c}
+    main{max-width:600px;margin:60px auto;padding:28px;background:white;border-radius:16px;box-shadow:0 8px 30px #0001}
+    input,button{box-sizing:border-box;width:100%;padding:13px;margin:8px 0;border-radius:8px}
+    input{border:1px solid #ccd3df}
+    button{background:#123d80;color:white;border:0;cursor:pointer}
+  </style>
+</head>
+<body>
+  <main>
+    <h1>ARORA.HOST</h1>
+    <h2>Complete Your Hosting Order</h2>
+    <p id="plan">Selected plan: Loading...</p>
+    <form id="orderForm">
+      <input name="name" placeholder="Your full name" required>
+      <input name="email" type="email" placeholder="Email address" required>
+      <input name="domain" placeholder="Domain name (optional)">
+      <button type="submit">Send Order Enquiry</button>
+    </form>
+    <p id="message"></p>
+    <a href="/">← Back to Home</a>
+  </main>
+  <script>
+    const params = new URLSearchParams(location.search);
+    const plan = params.get("plan") || "Starter";
+    const price = params.get("price") || "";
+    document.getElementById("plan").textContent =
+      "Selected plan: " + plan + (price ? " — ₹" + price : "");
+
+    document.getElementById("orderForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const data = new FormData(this);
+      const subject = encodeURIComponent("ARORA.HOST order enquiry - " + plan);
+      const body = encodeURIComponent(
+        "Plan: " + plan + "\nPrice: ₹" + price +
+        "\nName: " + data.get("name") +
+        "\nEmail: " + data.get("email") +
+        "\nDomain: " + (data.get("domain") || "Not provided")
+      );
+      document.getElementById("message").textContent =
+        "Opening your email application to send the enquiry...";
+      location.href = "mailto:hello@arora.host?subject=" + subject + "&body=" + body;
+    });
+  </script>
+</body>
+</html>
